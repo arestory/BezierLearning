@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="lineColor">#fa6c0e</color>
+    <color name="cColor">#ccccaa</color>
+    <color name="controlPointColor">#ffff17</color>
+    <color name="red">#fc060e</color>
+    <color name="waveColor">#a8b2ea</color>
+    <color name="successColor">#3F51B5</color>
+    <color name="shadowWaveColor">#3F51B5</color>
+    <color name="pauseColor">#fa6c0e</color>
+</resources>

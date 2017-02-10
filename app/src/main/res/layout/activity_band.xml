@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <include
+        layout="@layout/common_bar"
+
+        ></include>
+
+
+
+    <ares.ywq.com.bezierlearning.view.FunnyBandLoading
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:ballUpColor="@color/red"
+        android:id="@+id/band" />
+    <TextView
+        android:gravity="center"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimary"
+        android:text="本场景忽略所有能量损耗"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <Button
+        android:text="开始动画"
+        android:id="@+id/start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="停止动画"
+        android:id="@+id/stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

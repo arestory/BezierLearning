@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ares.ywq.com.bezierlearning">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <!-- 动态绘制贝塞尔曲线 -->
+        <activity android:name=".DrawBezierCurActivity">
+
+        </activity>
+
+        <!-- 波浪 -->
+        <activity android:name=".WaveActivity">
+
+        </activity>
+
+        <activity android:name=".FunnyBandActivity">
+
+        </activity>
+        <activity android:name=".ListActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

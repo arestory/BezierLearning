@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <include
+        layout="@layout/common_bar"
+
+        ></include>
+
+    <ares.ywq.com.bezierlearning.view.WaveView
+        android:background="#bababa"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/waveView" />
+    <LinearLayout
+        android:gravity="center"
+        android:id="@+id/layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ares.ywq.com.bezierlearning.view.WaveProgress
+
+            app:circleColor="#bebebe"
+            app:waveColor="@color/waveColor"
+            app:successColor="@color/successColor"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:progressTextSize="22sp"
+            android:id="@+id/waveProgress" />
+
+        <SeekBar
+
+            android:layout_margin="40dp"
+             android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
+</LinearLayout>
