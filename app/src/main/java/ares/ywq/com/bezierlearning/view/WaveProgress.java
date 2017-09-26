@@ -76,7 +76,7 @@ public final class WaveProgress extends View {
     private Point pControl4_shadow;
     private Point p5_shadow;
 
-    //圆与深色波浪的路径交集
+    //圆与深色波浪的路径交集,主要用于形成波浪被困在圆中的效果
     private Path waveInCirclePath;
     //圆与浅色波浪的路径交集
     private Path waveShadowInCirclePath;
@@ -234,13 +234,12 @@ public final class WaveProgress extends View {
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public void drawWave(Canvas canvas) {
-        //根据进度获取相应增加的高度
+        //根据当前进度计算出水平面高度
         float addHeight = 2 * radius * progress;
         wavePaint.setColor(waveColor);
         wavePaint.setAntiAlias(true);
         wavePaint.setStrokeWidth(2);
         wavePaint.setStyle(Paint.Style.FILL);
-
         wavePath.reset();
         wavePath.moveTo(p1.x + waveMoveX, p1.y - addHeight);
         wavePath.quadTo(pControl1.x + waveMoveX, pControl1.y - addHeight, p2.x + waveMoveX, p2.y - addHeight);
@@ -251,10 +250,8 @@ public final class WaveProgress extends View {
         wavePath.lineTo(p1.x + waveMoveX, radius * 2);
         wavePath.lineTo(p1.x + waveMoveX, p1.y + addHeight);
         wavePath.close();
-
         circlePaint.setColor(circleColor);
         circlePaint.setAntiAlias(true);
-
         waveInCirclePath.reset();
         waveInCirclePath.addCircle(radius, radius, radius, Path.Direction.CW);
         //取该圆与波浪路径的交集，形成波浪在圆内的效果
@@ -272,6 +269,7 @@ public final class WaveProgress extends View {
 
         waveShadowPath.reset();
         //float disY_move = 0;
+        //根据当前进度计算出水平面高度
         float addHeight = 2 * radius * progress;
         waveShadowPath.moveTo(p1_shadow.x + waveMoveX, p1_shadow.y - addHeight);
         waveShadowPath.quadTo(pControl1_shadow.x + waveMoveX, pControl1_shadow.y - addHeight, p2_shadow.x + waveMoveX, p2_shadow.y - addHeight);
