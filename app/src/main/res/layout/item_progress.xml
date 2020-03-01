@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/dp_10"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:background="@mipmap/ic_launcher"
+        android:layout_width="64dp"
+        android:layout_height="64dp"/>
+    <ares.ywq.com.bezierlearning.view.WaveProgressView
+        app:circleColor="#bebebe"
+        android:alpha="0.8"
+        app:waveColor="@color/waveColor"
+        app:successColor="@color/successColor"
+        app:shape="square"
+        app:showProgressText="true"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:progressTextSize="22sp"
+        android:id="@+id/waveProgress" />
+
+</FrameLayout>

@@ -26,7 +26,7 @@ import ares.ywq.com.bezierlearning.util.Point;
  * Created by ares on 2017/2/9.
  */
 
-public final class WaveProgress extends View {
+public final class WaveProgressView extends View {
 
 
     //控件长宽
@@ -47,6 +47,8 @@ public final class WaveProgress extends View {
     private int pauseColor;
     //进度文字大小
     private int progressTextSize;
+    private boolean showProgressText = true;
+    private Shape shape = Shape.Circle;
     private float progress = 0;
     //波浪高度
     private int waveHeight;
@@ -81,7 +83,7 @@ public final class WaveProgress extends View {
     //圆与浅色波浪的路径交集
     private Path waveShadowInCirclePath;
 
-    public WaveProgress(Context context) {
+    public WaveProgressView(Context context) {
         super(context);
         initAllPath();
         circleColor = Color.parseColor("#bababa");
@@ -94,10 +96,15 @@ public final class WaveProgress extends View {
 
     }
 
-    public WaveProgress(Context context, AttributeSet attrs) {
+    private enum Shape {
+
+        Circle, Square
+    }
+
+    public WaveProgressView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initAllPath();
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.WaveProgress);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.WaveProgressView);
         obtainTypedArray(array);
     }
 
@@ -110,12 +117,14 @@ public final class WaveProgress extends View {
 
     private void obtainTypedArray(TypedArray array) {
 
-        circleColor = array.getColor(R.styleable.WaveProgress_circleColor, Color.parseColor("#bababa"));
-        waveColor = array.getColor(R.styleable.WaveProgress_waveColor, Color.parseColor("#3F51B5"));
+        circleColor = array.getColor(R.styleable.WaveProgressView_circleColor, Color.parseColor("#bababa"));
+        waveColor = array.getColor(R.styleable.WaveProgressView_waveColor, Color.parseColor("#3F51B5"));
         beginColor = waveColor;
-        successColor = array.getColor(R.styleable.WaveProgress_successColor, Color.parseColor("#3F51B5"));
-        progressTextSize = array.getDimensionPixelSize(R.styleable.WaveProgress_progressTextSize, 80);
-        pauseColor = array.getColor(R.styleable.WaveProgress_pauseColor, Color.parseColor("#fa6c0e"));
+        successColor = array.getColor(R.styleable.WaveProgressView_successColor, Color.parseColor("#3F51B5"));
+        progressTextSize = array.getDimensionPixelSize(R.styleable.WaveProgressView_progressTextSize, 80);
+        pauseColor = array.getColor(R.styleable.WaveProgressView_pauseColor, Color.parseColor("#fa6c0e"));
+        showProgressText = array.getBoolean(R.styleable.WaveProgressView_showProgressText, false);
+        shape = array.getInteger(R.styleable.WaveProgressView_shape, 0) == 0 ? Shape.Circle : Shape.Square;
 
         initAllPaint();
         postDelayed(new Runnable() {
@@ -192,7 +201,7 @@ public final class WaveProgress extends View {
 
     private Paint wavePaint;
     private Paint waveShadowPaint;
-    private Paint circlePaint;
+    private Paint shapePaint;
     private Paint textPaint;
 
     /**
@@ -206,8 +215,8 @@ public final class WaveProgress extends View {
         if (waveShadowPaint == null) {
             waveShadowPaint = new Paint();
         }
-        if (circlePaint == null) {
-            circlePaint = new Paint();
+        if (shapePaint == null) {
+            shapePaint = new Paint();
         }
         if (textPaint == null) {
             textPaint = new Paint();
@@ -219,13 +228,43 @@ public final class WaveProgress extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawCircle(radius, radius, radius, circlePaint);
+//        if(shape == Shape.Circle){
+//
+//            canvas.drawCircle(radius, radius, radius, shapePaint);
+//        }else {
+//            canvas.drawRect(0,0,radius*2,radius*2, shapePaint);
+//        }
         drawWaveShadow(canvas);
         drawWave(canvas);
-        drawProgressText(canvas);
-
+        if(showProgressText){
+            drawProgressText(canvas);
+        }
     }
 
+
+    public boolean isShowProgressText() {
+        return showProgressText;
+    }
+
+    public void setShowProgressText(boolean showProgressText) {
+        this.showProgressText = showProgressText;
+        postInvalidate();
+    }
+
+    private Path otherShapePath;
+    public void setOtherShape(Path path){
+        this.otherShapePath = path;
+        postInvalidate();
+    }
+
+    public Shape getShape() {
+        return shape;
+    }
+
+    public void setShape(Shape shape) {
+        this.shape = shape;
+        postInvalidate();
+    }
 
     /**
      * 绘制深色波浪
@@ -250,10 +289,16 @@ public final class WaveProgress extends View {
         wavePath.lineTo(p1.x + waveMoveX, radius * 2);
         wavePath.lineTo(p1.x + waveMoveX, p1.y + addHeight);
         wavePath.close();
-        circlePaint.setColor(circleColor);
-        circlePaint.setAntiAlias(true);
+        shapePaint.setColor(circleColor);
+        shapePaint.setAntiAlias(true);
         waveInCirclePath.reset();
-        waveInCirclePath.addCircle(radius, radius, radius, Path.Direction.CW);
+        if(shape==Shape.Circle){
+            waveInCirclePath.addCircle(radius, radius, radius, Path.Direction.CW);
+        }else if(shape==Shape.Square){
+            waveInCirclePath.addRect(0,0,radius*2,radius*2, Path.Direction.CW);
+        }else{
+            waveInCirclePath.addPath(otherShapePath);
+        }
         //取该圆与波浪路径的交集，形成波浪在圆内的效果
         waveInCirclePath.op(wavePath, Path.Op.INTERSECT);
         canvas.drawPath(waveInCirclePath, wavePaint);
@@ -290,7 +335,13 @@ public final class WaveProgress extends View {
 
 
         waveShadowInCirclePath.reset();
-        waveShadowInCirclePath.addCircle(radius, radius, radius, Path.Direction.CW);
+        if(shape==Shape.Circle){
+            waveShadowInCirclePath.addCircle(radius, radius, radius, Path.Direction.CW);
+        }else if(shape==Shape.Square){
+            waveShadowInCirclePath.addRect(0,0,radius*2,radius*2, Path.Direction.CW);
+        }else{
+            waveInCirclePath.addPath(otherShapePath);
+        }
         //取该圆与波浪路径的交集，形成波浪在圆内的效果
         waveShadowInCirclePath.op(waveShadowPath, Path.Op.INTERSECT);
         canvas.drawPath(waveShadowInCirclePath, waveShadowPaint);
@@ -315,7 +366,6 @@ public final class WaveProgress extends View {
             progressText = "已暂停";
         }
         canvas.drawText(progressText, radius, radius + fontMetrics.bottom, textPaint);
-
     }
 
 
@@ -340,10 +390,27 @@ public final class WaveProgress extends View {
         colorAnimation.setRepeatCount(ValueAnimator.INFINITE);
         colorAnimation.setDuration(2000);
         colorAnimation.start();
-
     }
 
 
+    private boolean isWaving = false;
+
+    public boolean isWaving() {
+        return isWaving;
+    }
+
+    public void changeMoveX(float waveMoveX){
+
+        this.waveMoveX = waveMoveX;
+        postInvalidate();
+        isWaving = true;
+    }
+
+
+    public int  getSideLength(){
+
+        return radius;
+    }
     /**
      * 循环播放波浪动画
      *
@@ -361,8 +428,6 @@ public final class WaveProgress extends View {
                 //改变波浪的 x 值
                 waveMoveX = (Float) animation.getAnimatedValue();
                 postInvalidate();
-
-
             }
 
         });

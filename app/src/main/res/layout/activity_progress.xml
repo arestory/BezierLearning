@@ -13,7 +13,7 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ares.ywq.com.bezierlearning.view.WaveProgress
+        <ares.ywq.com.bezierlearning.view.WaveProgressView
 
             app:circleColor="#ffffff"
             android:layout_width="100dp"

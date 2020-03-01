@@ -1,5 +1,7 @@
 package ares.ywq.com.bezierlearning;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -8,16 +10,13 @@ import android.support.annotation.Nullable;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-import ares.ywq.com.bezierlearning.view.WaveProgress;
+import ares.ywq.com.bezierlearning.view.WaveProgressView;
 import ares.ywq.com.bezierlearning.view.WaveView;
 
 /**
@@ -26,7 +25,7 @@ import ares.ywq.com.bezierlearning.view.WaveView;
 
 public class WaveActivity extends Activity  {
 
-    private WaveProgress waveProgress;
+    private WaveProgressView waveProgress;
     private WaveView waveView;
     private SeekBar seekBar;
     private float progress=0;
@@ -53,10 +52,10 @@ public class WaveActivity extends Activity  {
             public void onClick(View v) {
 
                 waveView.setVisibility(View.GONE);
-
+                startWavingAnim(1000);
             }
         });
-        waveProgress=(WaveProgress)findViewById(R.id.waveProgress);
+        waveProgress=(WaveProgressView)findViewById(R.id.waveProgress);
         waveProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +64,12 @@ public class WaveActivity extends Activity  {
                 }else{
                     waveProgress.onPause();
                 }
+            }
+        });
+        findViewById(R.id.btnList).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WaveListActivity.start(WaveActivity.this);
             }
         });
         seekBar.setMax(100);
@@ -93,6 +98,50 @@ public class WaveActivity extends Activity  {
         waveProgress.setProgress(getAvaPercent());
 
     }
+
+    public void startWavingAnim(final long duration) {
+        ValueAnimator waveAnimator = ValueAnimator.ofFloat(0, 2 * waveProgress.getSideLength());
+        waveAnimator.setDuration(duration);
+        waveAnimator.setInterpolator(new LinearInterpolator());
+        waveAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                //改变波浪的 x 值
+               float  waveMoveX = (Float) animation.getAnimatedValue();
+                waveProgress.changeMoveX(waveMoveX);
+            }
+
+        });
+        waveAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+        //无限重复
+        waveAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        waveAnimator.start();
+    }
+
+
 
     private float  getAvaPercent(){
 

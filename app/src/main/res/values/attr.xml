@@ -16,12 +16,18 @@
 
     </declare-styleable>
 
-    <declare-styleable name="WaveProgress">
+    <declare-styleable name="WaveProgressView">
 
         <attr name="circleColor" format="color"></attr>
         <attr name="waveColor" format="color"></attr>
         <attr name="progressTextSize" format="dimension"></attr>
         <attr name="pauseColor" format="color"></attr>
+        <attr name="showProgressText" format="boolean"></attr>
+        <attr name="shape" format="enum">
+
+            <enum name="circle" value="0"/>
+            <enum name="square" value="1"/>
+        </attr>
 
         <attr name="successColor"  format="color"></attr>
     </declare-styleable>
